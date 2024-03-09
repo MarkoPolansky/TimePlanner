@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="clr-namespace:TimePlanner.App.Views"
+                       xmlns:t="clr-namespace:TimePlanner.App.Resources.Texts"
+                       xmlns:m="clr-namespace:TimePlanner.BL.Models;assembly=TimePlanner.BL"
+                       xmlns:vm="clr-namespace:TimePlanner.App.ViewModels"
+                       x:Class="TimePlanner.App.Views.Project.ProjectDetailView"
+                       Title=""
+                       x:DataType="vm:ProjectDetailViewModel"
+                       x:Name="ProjectDetailViewRoot"
+                       Style="{StaticResource ContentPageStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="SlateGray" />
+                <Setter Property="BorderColor" Value="Silver" />
+                <Setter Property="Margin" Value="5, 0" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="WidthRequest" Value="100" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <HorizontalStackLayout Grid.ColumnSpan="2"
+                               Margin="0, 20">
+        <Entry Placeholder="Project name"
+               Text="{Binding NewName}"
+               WidthRequest = "300"
+               HorizontalOptions="Start"/>
+        <Button Text="Save Name" 
+                Command="{Binding ChangeNameCommand}"/>
+        </HorizontalStackLayout>
+        <Label 
+            Text="Members"
+            VerticalOptions="Start" 
+            HorizontalOptions="Start" 
+            Grid.Row="1"/>
+        <CollectionView ItemsSource="{Binding Project.Users}" Grid.Row="2">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:ProjectUserRelationListModel">
+                    <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5, 150, 5" Padding="10,5" HeightRequest="35">
+                        <Label Text="{Binding UserName }"
+                               BackgroundColor="White"
+                               />
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label Grid.Column="1"
+               Grid.Row="1"
+               Text="Activities"
+               VerticalOptions="Start" 
+               HorizontalOptions="Start" />
+        <CollectionView ItemsSource="{Binding MyActivities}" Grid.Column="1" Grid.Row="2">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:ActivityListModel">
+                    <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5, 150, 5" Padding="10, 5" HeightRequest="35" >
+                        <Label Text="{Binding Description }"
+                               BackgroundColor="White"/>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <HorizontalStackLayout
+                Grid.Column="1"
+                Grid.Row="3"
+                Margin="0, 20"
+                HorizontalOptions="End"
+                VerticalOptions="End">
+            <Button Text="Delete" 
+                    Command="{Binding DeleteProjectCommand}"
+                    HeightRequest="40"/>
+            <Button Text="Close" 
+                    Command="{Binding CloseDetailCommand}"
+                    HeightRequest="40"/>
+        </HorizontalStackLayout>
+    </Grid>
+
+</views:ContentPageBase>

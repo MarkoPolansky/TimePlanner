@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:TimePlanner.App.Views"
+    xmlns:t="clr-namespace:TimePlanner.App.Resources.Texts"
+    xmlns:m="clr-namespace:TimePlanner.BL.Models;assembly=TimePlanner.BL"
+    xmlns:vm="clr-namespace:TimePlanner.App.ViewModels"
+    x:Class="TimePlanner.App.Views.Activities.ActivitiesEditView"
+    Title=""
+    x:DataType="vm:ActivitiesEditViewModel"
+    Style="{StaticResource ContentPageStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="SlateGray" />
+                <Setter Property="BorderColor" Value="Silver" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Button
+            Grid.Row="1"
+            HorizontalOptions="End"
+            Text="Save Activity"
+            Command="{Binding SaveCommand}"
+            HeightRequest="40"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                <Label Text="Name of activity"/>
+                <Entry
+                    Text="{Binding Activity.Description}"
+                    VerticalOptions="Fill" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="1" Grid.Column="0">
+                <Label Text="Start of activity (time)"/>
+                <TimePicker Format="HH:mm" Time="{Binding ActivityStartTime}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="2" Grid.Column="0">
+                <Label Text="Start of activity (date)"/>
+                <DatePicker Date="{Binding Activity.Start}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="3" Grid.Column="0">
+                <Label Text="End of activity (time)"/>
+                <TimePicker Format="HH:mm" Time="{Binding ActivityEndTime}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="4" Grid.Column="0">
+                <Label Text="End of activity (date)"/>
+                <DatePicker Date="{Binding Activity.End}"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</views:ContentPageBase>

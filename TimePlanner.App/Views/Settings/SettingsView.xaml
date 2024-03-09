@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="using:TimePlanner.App.Views"
+             xmlns:vm="using:TimePlanner.App.ViewModels.Settings"
+             xmlns:m="clr-namespace:TimePlanner.BL.Models;assembly=TimePlanner.BL"
+             xmlns:activityTypes="using:TimePlanner.App.ViewModels.ActivityTypes"
+             Title=""
+             x:Class="TimePlanner.App.Views.Settings.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="SlateGray" />
+                <Setter Property="BorderColor" Value="Silver" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid ColumnDefinitions="2*,*" Padding="50">
+        <CollectionView ItemsSource="{Binding ActivityTypes}"  Grid.Column="0">
+            <CollectionView.Header>
+                <Label TextColor="Black" FontSize="24" Text="Types of Activities"/>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:ActivityTypeListModel">
+                    <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5, 250, 5" Padding="10,5" HeightRequest="40">
+                        <Grid BackgroundColor="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label TextColor="Black" 
+                                   Text="{Binding Name}"
+                                   VerticalOptions="Center"/>
+                            <HorizontalStackLayout Grid.Column="1">
+                            <Button 
+                            Text="Edit"
+                            Margin="0,0,5,0"
+                            Command="{Binding Source={RelativeSource Mode=FindAncestorBindingContext, AncestorType={x:Type vm:SettingsViewModel}}, Path=GoToEditCommand}"
+                            CommandParameter="{Binding Id}" />
+                            <Button
+                            Grid.Column="1"
+                            Text="Delete"
+                            BackgroundColor="LightSlateGrey"
+                            Command="{Binding Source={RelativeSource Mode=FindAncestorBindingContext, AncestorType={x:Type vm:SettingsViewModel}}, Path=DeleteCommand}"
+                            CommandParameter="{Binding Id}"/>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <Button
+                    WidthRequest="200"
+                    HeightRequest="40"
+                    Text="Add New Activity Type"
+                    Command="{Binding GoToCreateCommand}" 
+                    HorizontalOptions="Start"/>
+            </CollectionView.Footer>
+        </CollectionView>
+        
+        <VerticalStackLayout Grid.Column="1">
+            <Image WidthRequest="128" Source="user_profile_icon.png"/>
+            <Label HorizontalOptions="Center" Margin="0,5,0,20" TextColor="Black" Text="{Binding StateService.CurrentUser, Converter={StaticResource UserNameConverter}}"/>
+            <Button
+                Grid.Row="2"
+                HorizontalOptions="Center"
+                Text="Switch User"
+                Command="{Binding GoToUsersCommand}"/>
+        </VerticalStackLayout>
+    </Grid>
+    
+</views:ContentPageBase>

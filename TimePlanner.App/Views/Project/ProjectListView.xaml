@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="clr-namespace:TimePlanner.App.Views"
+                       xmlns:t="clr-namespace:TimePlanner.App.Resources.Texts"
+                       xmlns:m="clr-namespace:TimePlanner.BL.Models;assembly=TimePlanner.BL"
+                       xmlns:vm="clr-namespace:TimePlanner.App.ViewModels.Project"
+                       x:Class="TimePlanner.App.Views.Project.ProjectListView"
+                       Title=""
+                       x:DataType="vm:ProjectListViewModel"
+                       x:Name="ProjectListViewRoot"
+                       Style="{StaticResource ContentPageStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="SlateGray" />
+                <Setter Property="BorderColor" Value="Silver" />
+                
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+    
+        <HorizontalStackLayout Spacing="100">
+            <HorizontalStackLayout>
+                <Entry
+                    Text="{Binding FindProjectName}"
+                    TextChanged="OnFindProjectNameChanged"
+                    Placeholder="Find project by name"
+                    WidthRequest = "300"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Label Text="Show only my projects" VerticalOptions="Center"/>
+                <CheckBox IsChecked="{Binding FindMyProjects}"
+                          CheckedChanged="OnFindMyProjectsChanged"
+                          Color="SlateGrey"/>
+            </HorizontalStackLayout>
+        </HorizontalStackLayout>
+        <CollectionView ItemsSource="{Binding Projects}"
+                        Grid.Row="1">
+            <CollectionView.Header>
+                <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5" Padding="10, 5" >
+                    <Grid BackgroundColor="White" HeightRequest="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="700"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Column="0"
+                            Text="Name"
+                                VerticalOptions="Center"/>
+                        <Label
+                            Grid.Column="1"
+                            Text="Actions"
+                            HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                </Frame>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:ProjectListModel">
+                    <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5" Padding="5">
+                        <Grid HeightRequest="30"
+                          BackgroundColor="White"
+                          Padding="10, 0"
+                          >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="700"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                            <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Button Text="Join"
+                                Margin="0,0,5,0"
+                                Command="{Binding Source={x:Reference ProjectListViewRoot}, Path=BindingContext.JoinProjectCommand}"
+                                CommandParameter="{Binding Id}"/>
+                                <Button Text="View" 
+                                Command="{Binding Source={x:Reference ProjectListViewRoot}, Path=BindingContext.GoToDetailCommand}"
+                                CommandParameter="{Binding Id}"
+                                />
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <HorizontalStackLayout 
+            Grid.Row="2">
+            <Entry Text="{Binding NewProjectName}"
+                   Placeholder="Add new project"
+                   WidthRequest="300"/>
+            <Button Text="Save" 
+                    Margin="5, 0"
+                    Command="{Binding AddNewProjectCommand}"
+                    CommandParameter="{Binding NewProjectName}"/>
+        </HorizontalStackLayout>
+
+               
+    </Grid>
+</views:ContentPageBase>

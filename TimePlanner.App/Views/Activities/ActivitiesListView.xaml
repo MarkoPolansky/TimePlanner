@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:TimePlanner.App.Views"
+    xmlns:t="clr-namespace:TimePlanner.App.Resources.Texts"
+    xmlns:m="clr-namespace:TimePlanner.BL.Models;assembly=TimePlanner.BL"
+    xmlns:vm="clr-namespace:TimePlanner.App.ViewModels"
+    Title=""
+    x:Class="TimePlanner.App.Views.Activities.ActivitiesListView"
+    x:Name="ActivitiesListViewRoot"
+    x:DataType="vm:ActivitiesListViewModel"
+    Style="{StaticResource ContentPageStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="SlateGray" />
+                <Setter Property="BorderColor" Value="Silver" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Center" Margin="0, 0, 0, 10">
+            <Label Text="Displaying activities for dates between:"/>
+            <Label Text="{Binding SelectedDateStart, Converter={StaticResource DateStringConverter}}" Margin="5, 0"/>
+            <Label Text="-"/>
+            <Label Text="{Binding SelectedDateEnd, Converter={StaticResource DateStringConverter}}" Margin="5, 0"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center" Margin="0, 0, 0, 10">
+            <Button Text='←' Command="{Binding SubstractDateCommand}"></Button>
+            <Picker
+                Margin="10, 0"
+            SelectedIndex="0"
+                SelectedIndexChanged="SelectedModeChanged"
+            SelectedItem="{Binding SelectedMode}">
+                <Picker.Items>
+                    <x:String>Day</x:String>
+                    <x:String>Week</x:String>
+                    <x:String>Month</x:String>
+                </Picker.Items>
+            </Picker>
+            <Button Text="→" Command="{Binding IncrementDateCommand}"></Button>
+        </HorizontalStackLayout>
+        <CollectionView
+            Grid.Row="2"
+            ItemsSource="{Binding Activities}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.Header>
+                <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5" Padding="10, 5" >
+                    <Grid BackgroundColor="White" HeightRequest="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="180"/>
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Column="0"
+                            Text="Name"
+                                VerticalOptions="Center"/>
+                        <Label
+                            Grid.Column="1"
+                            Text="Project Name"
+                                VerticalOptions="Center"/>
+                        <Label
+                            Grid.Column="2"
+                            Text="Start"
+                                VerticalOptions="Center"/>
+                        <Label
+                            Grid.Column="3"
+                            Text="End"
+                                VerticalOptions="Center"/>
+                        <Label
+                            Grid.Column="4"
+                            Text="Actions"
+                            HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                </Frame>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:ActivityListModel">
+                    <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5" Padding="10, 5" >
+                        <Grid BackgroundColor="White" HeightRequest="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="180"/>
+                            </Grid.ColumnDefinitions>
+                            <Label
+                            Grid.Column="0"
+                            Text="{Binding Description}"
+                                VerticalOptions="Center"/>
+                            <Label
+                            Grid.Column="1"
+                            Text="{Binding ProjectName}"
+                                VerticalOptions="Center"/>
+                            <Label
+                            Grid.Column="2"
+                            Text="{Binding Start, Converter={StaticResource DateTimeStringConverter}}"
+                                VerticalOptions="Center"/>
+                            <Label
+                            Grid.Column="3"
+                            Text="{Binding End, Converter={StaticResource DateTimeStringConverter}}"
+                                VerticalOptions="Center"/>
+                            <Button
+                            Grid.Column="4"
+                            HorizontalOptions="Center" VerticalOptions="Center"
+                            Text="Edit Activity"
+                            Command="{Binding Source={RelativeSource Mode=FindAncestorBindingContext, AncestorType={x:Type vm:ActivitiesListViewModel}}, Path=GoToEditCommand}"
+                            CommandParameter="{Binding Id}"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button
+            HorizontalOptions="End" VerticalOptions="End"
+            Text="Add Activity"
+            Command="{Binding GoToCreateCommand}"
+            Grid.Row="3"
+            HeightRequest="40"/>
+    </Grid>
+</views:ContentPageBase>

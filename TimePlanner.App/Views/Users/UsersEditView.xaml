@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:TimePlanner.App.Views"
+    xmlns:t="clr-namespace:TimePlanner.App.Resources.Texts"
+    xmlns:m="clr-namespace:TimePlanner.BL.Models;assembly=TimePlanner.BL"
+    xmlns:vm="clr-namespace:TimePlanner.App.ViewModels"
+    x:Class="TimePlanner.App.Views.Users.UsersEditView"
+    Title=""
+    x:DataType="vm:UsersEditViewModel"
+    Style="{StaticResource ContentPageStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="SlateGray" />
+                <Setter Property="BorderColor" Value="Silver" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <VerticalStackLayout
+                Grid.Row="0">
+                <Label
+                    Text="First Name"/>
+                <Entry
+                    WidthRequest="400"
+                    Text="{Binding User.FirstName}"
+                    HorizontalOptions="Start" />
+            </VerticalStackLayout>
+            <VerticalStackLayout
+                Grid.Row="1">
+                <Label
+                    Text="Last Name"/>
+                <Entry
+                    WidthRequest="400"
+                    Text="{Binding User.LastName}"
+                    HorizontalOptions="Start" />
+            </VerticalStackLayout>
+        </Grid>
+        <Button
+            Grid.Row="2"
+            HeightRequest="40"
+            HorizontalOptions="End"
+            Text="Save User"
+            Command="{Binding SaveCommand}"/>
+    </Grid>
+</views:ContentPageBase>

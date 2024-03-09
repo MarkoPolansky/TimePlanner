@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:TimePlanner.App.Views"
+    xmlns:t="clr-namespace:TimePlanner.App.Resources.Texts"
+    xmlns:m="clr-namespace:TimePlanner.BL.Models;assembly=TimePlanner.BL"
+    xmlns:vm="clr-namespace:TimePlanner.App.ViewModels"
+    x:Class="TimePlanner.App.Views.Users.UsersListView"
+    Title=""
+    x:DataType="vm:UsersListViewModel"
+    x:Name="UsersListViewRoot"
+    Style="{StaticResource ContentPageStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="SlateGray" />
+                <Setter Property="BorderColor" Value="Silver" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            FontSize="Medium"
+            Text="Select User"/>
+        <Button
+            Grid.Row="2"
+            HorizontalOptions="End" VerticalOptions="Start"
+            Text="Add User"
+            HeightRequest="40"
+            Command="{Binding GoToCreateCommand}"/>
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding Users}">
+            <CollectionView.Header>
+                <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5" Padding="10, 5" >
+                    <Grid BackgroundColor="White" HeightRequest="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="700"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            Grid.Column="0"
+                            Text="Name"
+                                VerticalOptions="Center"/>
+                        <Label
+                            Grid.Column="1"
+                            Text="Actions"
+                            HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                </Frame>
+            </CollectionView.Header>
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:UserListModel">
+                    <Frame CornerRadius="5" BackgroundColor="White" Margin="0, 5" Padding="10,5" >
+
+                        <Grid BackgroundColor="White" HeightRequest="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="700"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <HorizontalStackLayout Grid.Column="0" VerticalOptions="Center">
+                            <Label
+                            Text="{Binding FirstName}"
+                                Margin="5,0"/>
+                            <Label
+                            Text="{Binding LastName}"/>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Grid.Column="1"
+                                                   HorizontalOptions="End" VerticalOptions="Center"
+>
+                            <Button
+                            Margin="5,0"
+                            Text="Edit User"
+                            Command="{Binding Source={RelativeSource Mode=FindAncestorBindingContext, AncestorType={x:Type vm:UsersListViewModel}}, Path=GoToEditCommand}"
+                            CommandParameter="{Binding Id}"/>
+                            <Button
+                            Text="Select User"
+                            Command="{Binding Source={RelativeSource Mode=FindAncestorBindingContext, AncestorType={x:Type vm:UsersListViewModel}}, Path=SelectUserCommand}"
+                            CommandParameter="{Binding Id}"/>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</views:ContentPageBase>
